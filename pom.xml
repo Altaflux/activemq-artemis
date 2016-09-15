@@ -86,7 +86,7 @@
       <qpid.jms.version>0.9.0</qpid.jms.version>
       <johnzon.version>0.9.4</johnzon.version>
       <json-p.spec.version>1.0-alpha-1</json-p.spec.version>
-
+      <kotlin.version>1.0.3</kotlin.version>
       <activemq.version.versionName>${project.version}</activemq.version.versionName>
       <activemq.version.majorVersion>1</activemq.version.majorVersion>
       <activemq.version.minorVersion>0</activemq.version.minorVersion>
@@ -556,7 +556,17 @@
             <!-- License: Apache 2.0 -->
          </dependency>
 
-
+         <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
@@ -576,7 +586,17 @@
             <scope>provided</scope>
             <!-- License: Apache 2.0 -->
         </dependency>
-
+      <dependency>
+         <groupId>org.jetbrains.kotlin</groupId>
+         <artifactId>kotlin-stdlib</artifactId>
+         <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jetbrains.kotlin</groupId>
+         <artifactId>kotlin-test</artifactId>
+         <version>${kotlin.version}</version>
+         <scope>test</scope>
+      </dependency>
    </dependencies>
 
    <profiles>
@@ -818,6 +838,33 @@
    <build>
       <pluginManagement>
          <plugins>
+            <plugin>
+               <groupId>org.jetbrains.kotlin</groupId>
+               <artifactId>kotlin-maven-plugin</artifactId>
+               <version>${kotlin.version}</version>
+               <executions>
+                  <execution>
+                     <id>compile</id>
+                     <phase>process-sources</phase>
+                     <goals>
+                        <goal>compile</goal>
+                     </goals>
+                     <configuration>
+                        <sourceDirs>
+                           <source>src/main/java</source>
+                           <source>target/generated-sources/cxf</source>
+                        </sourceDirs>
+                     </configuration>
+                  </execution>
+                  <execution>
+                     <id>test-compile</id>
+                     <phase>process-test-sources</phase>
+                     <goals>
+                        <goal>test-compile</goal>
+                     </goals>
+                  </execution>
+               </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.eclipse.m2e</groupId>
 				<artifactId>lifecycle-mapping</artifactId>

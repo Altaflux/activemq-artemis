@@ -42,14 +42,17 @@ class DecodeJournal : LockAbstract() {
 
     companion object {
 
+        @JvmStatic
         fun importJournal(directory: String, journalPrefix: String, journalSuffix: String, minFiles: Int, fileSize: Int, fileInput: String) {
             importJournal(directory, journalPrefix, journalSuffix, minFiles, fileSize, FileInputStream(File(fileInput)))
         }
 
+        @JvmStatic
         fun importJournal(directory: String, journalPrefix: String, journalSuffix: String, minFiles: Int, fileSize: Int, stream: InputStream) {
             importJournal(directory, journalPrefix, journalSuffix, minFiles, fileSize, InputStreamReader(stream))
         }
 
+        @JvmStatic
         fun importJournal(directory: String, journalPrefix: String, journalSuffix: String, minFiles: Int, fileSize: Int, reader: Reader) {
             File(directory).apply {
                 if (exists()) {

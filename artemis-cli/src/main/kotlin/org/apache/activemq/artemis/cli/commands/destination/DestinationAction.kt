@@ -92,7 +92,7 @@ abstract class DestinationAction : InputAbstract() {
                 try {
                     close()
                 } catch (closeException: Exception) {
-                     e.addSuppressed(closeException)
+                 //    e.addSuppressed(closeException)
                 }
                 throw e
             } finally {

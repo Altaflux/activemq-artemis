@@ -35,7 +35,7 @@ class Producer : DestAbstract() {
 
         factory.createConnection().use { connection ->
             val threadsArray = arrayOfNulls<ProducerThread>(threads)
-            for (i in 0..threads) {
+            for (i in 0..threads -1) {
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
                 threadsArray[i] = ProducerThread(session, dest, i)
                 threadsArray[i]!!
@@ -70,7 +70,7 @@ class Producer : DestAbstract() {
                 try {
                     close()
                 } catch (closeException: Exception) {
-                    e.addSuppressed(closeException)
+                  //  e.addSuppressed(closeException)
                 }
                 throw e
             } finally {

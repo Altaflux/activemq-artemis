@@ -13,10 +13,10 @@ class CompactJournal : LockAbstract() {
     override fun execute(context: ActionContext): Any? {
         try {
             val configuration = fileConfiguration
-            compactJournal(File(getJournal()), "activemq-data", "amq", configuration.journalMinFiles, configuration.journalFileSize, null)
-            println("Compactation succeeded for " + getJournal())
-            compactJournal(File(getBinding()), "activemq-bindings", "bindings", 2, 1048576, null)
-            println("Compactation succeeded for " + getBinding())
+            compactJournal(File(journal), "activemq-data", "amq", configuration.journalMinFiles, configuration.journalFileSize, null)
+            println("Compactation succeeded for " + journal)
+            compactJournal(File(binding), "activemq-bindings", "bindings", 2, 1048576, null)
+            println("Compactation succeeded for " + binding)
         } catch (e: Exception) {
             treatError(e, "data", "compact")
         }

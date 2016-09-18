@@ -30,7 +30,7 @@ class PrintData : OptionalLocking() {
     override fun execute(context: ActionContext): Any? {
         super.execute(context)
         try {
-            printData(File(getBinding()), File(getJournal()), File(getPaging()))
+            printData(File(binding), File(journal), File(paging))
         } catch (e: Exception) {
             treatError(e, "data", "print")
         }

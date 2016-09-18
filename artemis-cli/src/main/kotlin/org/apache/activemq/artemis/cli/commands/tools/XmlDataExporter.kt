@@ -77,7 +77,7 @@ class XmlDataExporter : OptionalLocking() {
     override fun execute(context: ActionContext): Any? {
         super.execute(context)
         try {
-            process(context.out, getBinding(), getJournal(), getPaging(), largeMessages)
+            process(context.out, binding, journal, paging, largeMessages)
         } catch (e: Exception) {
             treatError(e, "data", "exp")
         }

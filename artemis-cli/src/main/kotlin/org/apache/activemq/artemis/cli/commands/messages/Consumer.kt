@@ -7,6 +7,7 @@ import org.apache.activemq.artemis.cli.commands.ActionContext
 import org.apache.activemq.artemis.cli.commands.util.ConsumerThread
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination
+import use
 import javax.jms.Session
 
 @Command(name = "consumer", description = "It will send consume messages from an instance")
@@ -32,16 +33,17 @@ class Consumer : DestAbstract() {
 
         factory.createConnection().use { connection ->
             val threadsArray = arrayOfNulls<ConsumerThread>(threads)
-            for (i in 0..threads -1) {
+            for (i in 0..threads - 1) {
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-                threadsArray[i] = ConsumerThread(session, dest, i)
-                threadsArray[i]!!.setVerbose(verbose).setSleep(sleep)
-                        .setDurable(durable)
-                        .setBatchSize(txBatchSize)
-                        .setBreakOnNull(breakOnNull)
-                        .setMessageCount(messageCount)
-                        .setReceiveTimeOut(receiveTimeout)
-                        .setFilter(filter).isBrowse = false
+                threadsArray[i] = ConsumerThread(session, dest, i).apply {
+                    this.durable = durable
+                    this.batchSize = txBatchSize
+                    this.breakOnNull = breakOnNull
+                    this.messageCount = messageCount
+                    this.receiveTimeOut = receiveTimeout
+                    this.filter = filter
+                    this.browse = false
+                }
             }
             for (thread in threadsArray) {
                 thread!!.start()
@@ -56,25 +58,5 @@ class Consumer : DestAbstract() {
         }
     }
 
-    companion object {
-        private inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
-            var closed = false
-            try {
-                return block(this)
-            } catch (e: Exception) {
-                closed = true
-                try {
-                    close()
-                } catch (closeException: Exception) {
-                  //  e.addSuppressed(closeException)
-                }
-                throw e
-            } finally {
-                if (!closed) {
-                    close()
-                }
-            }
-        }
-    }
 }
 

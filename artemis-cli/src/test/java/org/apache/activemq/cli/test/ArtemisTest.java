@@ -114,10 +114,10 @@ public class ArtemisTest {
    public void testSync() throws Exception {
       int writes = 20;
       int tries = 10;
-      long totalAvg = SyncCalculation.syncTest(temporaryFolder.getRoot(), 4096, writes, tries, true, true);
+      long totalAvg = SyncCalculation.INSTANCE.syncTest(temporaryFolder.getRoot(), 4096, writes, tries, true, true);
       System.out.println();
       System.out.println("TotalAvg = " + totalAvg);
-      long nanoTime = SyncCalculation.toNanos(totalAvg, writes);
+      long nanoTime = SyncCalculation.INSTANCE.toNanos(totalAvg, writes);
       System.out.println("nanoTime avg = " + nanoTime);
       Assert.assertEquals(0, LibaioContext.getTotalMaxIO());
 

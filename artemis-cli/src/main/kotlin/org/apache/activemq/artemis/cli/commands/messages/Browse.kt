@@ -6,6 +6,7 @@ import org.apache.activemq.artemis.cli.commands.ActionContext
 import org.apache.activemq.artemis.cli.commands.util.ConsumerThread
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination
+import use
 import javax.jms.Session
 
 @Command(name = "browser", description = "It will send consume messages from an instance")
@@ -23,8 +24,13 @@ class Browse : DestAbstract() {
             val threadsArray = arrayOfNulls<ConsumerThread>(threads)
             for (i in 0..threads -1) {
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-                threadsArray[i] = ConsumerThread(session, dest, i)
-                threadsArray[i]!!.setVerbose(verbose).setSleep(sleep).setMessageCount(messageCount).setFilter(filter).isBrowse = true
+                threadsArray[i] = ConsumerThread(session, dest, i).apply {
+                    this.sleep = sleep
+                    this.messageCount = messageCount
+                    this.filter = filter
+                    this.browse = true
+
+                }
             }
             for (thread in threadsArray) {
                 thread!!.start()
@@ -39,24 +45,5 @@ class Browse : DestAbstract() {
         }
     }
 
-    companion object {
-        private inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
-            var closed = false
-            try {
-                return block(this)
-            } catch (e: Exception) {
-                closed = true
-                try {
-                    close()
-                } catch (closeException: Exception) {
-                    //e.addSuppressed(closeException)
-                }
-                throw e
-            } finally {
-                if (!closed) {
-                    close()
-                }
-            }
-        }
-    }
+
 }

@@ -789,8 +789,8 @@ public class Create extends InputAbstract {
             System.out.println("");
             System.out.println("Auto tuning journal ...");
 
-            long time = SyncCalculation.syncTest(dataFolder, 4096, writes, 5, verbose, aio);
-            long nanoseconds = SyncCalculation.toNanos(time, writes);
+            long time = SyncCalculation.INSTANCE.syncTest(dataFolder, 4096, writes, 5, verbose, aio);
+            long nanoseconds = SyncCalculation.INSTANCE.toNanos(time, writes);
             double writesPerMillisecond = (double) writes / (double) time;
 
             String writesPerMillisecondStr = new DecimalFormat("###.##").format(writesPerMillisecond);

@@ -36,16 +36,18 @@ class Producer : DestAbstract() {
         factory.createConnection().use { connection ->
             val threadsArray = arrayOfNulls<ProducerThread>(threads)
             for (i in 0..threads -1) {
+
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-                threadsArray[i] = ProducerThread(session, dest, i)
-                threadsArray[i]!!
-                        .setVerbose(verbose).setSleep(sleep)
-                        .setPersistent(!nonpersistent)
-                        .setMessageSize(messageSize)
-                        .setTextMessageSize(textMessageSize)
-                        .setMsgTTL(msgTTL)
-                        .setMsgGroupID(msgGroupID)
-                        .setTransactionBatchSize(txBatchSize).messageCount = messageCount
+                threadsArray[i] = ProducerThread(session, dest, i).apply {
+                    this.verbose = verbose
+                    this.persistent = !this@Producer.nonpersistent
+                    this.messageSize = this@Producer.messageSize
+                    this.textMessageSize = this@Producer.textMessageSize
+                    this.msgTTL = this@Producer.msgTTL
+                    this.msgGroupID = this@Producer.msgGroupID
+                    this.transactionBatchSize = this@Producer.txBatchSize
+                    this.messageCount = this@Producer.messageCount
+                }
             }
             for (thread in threadsArray) {
                 thread!!.start()
@@ -54,7 +56,7 @@ class Producer : DestAbstract() {
             var messagesProduced = 0
             for (thread in threadsArray) {
                 thread!!.join()
-                messagesProduced += thread.sentCount
+                messagesProduced += thread.sentCount.get()
             }
             return messagesProduced
         }

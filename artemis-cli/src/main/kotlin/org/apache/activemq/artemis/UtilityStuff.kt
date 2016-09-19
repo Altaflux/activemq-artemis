@@ -1,4 +1,7 @@
- inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
+package org.apache.activemq.artemis
+
+
+inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
     var closed = false
     try {
         return block(this)

@@ -106,7 +106,7 @@ public class ArtemisTest {
    @Test
    public void testSupportsLibaio() throws Exception {
       Create x = new Create();
-      x.setInstance(new File("/tmp/foo"));
+      x.setDirectory(new File("/tmp/foo"));
       x.supportsLibaio();
    }
 
@@ -309,7 +309,7 @@ public class ArtemisTest {
 
    private void stopServer() throws Exception {
       Artemis.internalExecute("stop");
-      Assert.assertTrue(Run.latchRunning.await(5, TimeUnit.SECONDS));
+      Assert.assertTrue(Run.Companion.getLatchRunning().await(5, TimeUnit.SECONDS));
       Assert.assertEquals(0, LibaioContext.getTotalMaxIO());
    }
 

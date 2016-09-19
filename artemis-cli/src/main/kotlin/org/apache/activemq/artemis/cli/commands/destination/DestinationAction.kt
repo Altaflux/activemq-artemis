@@ -11,6 +11,7 @@ import org.apache.activemq.artemis.cli.commands.InputAbstract
 import org.apache.activemq.artemis.core.client.impl.ServerLocatorImpl
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory
 import org.apache.activemq.artemis.jms.client.ActiveMQSession
+import org.apache.activemq.artemis.use
 import javax.jms.Message
 import javax.jms.QueueRequestor
 import javax.jms.Session
@@ -83,24 +84,7 @@ abstract class DestinationAction : InputAbstract() {
         }
 
 
-        private inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
-            var closed = false
-            try {
-                return block(this)
-            } catch (e: Exception) {
-                closed = true
-                try {
-                    close()
-                } catch (closeException: Exception) {
-                 //    e.addSuppressed(closeException)
-                }
-                throw e
-            } finally {
-                if (!closed) {
-                    close()
-                }
-            }
-        }
+
 
         const val JMS_QUEUE = "jms-queue"
         const val JMS_TOPIC = "topic"

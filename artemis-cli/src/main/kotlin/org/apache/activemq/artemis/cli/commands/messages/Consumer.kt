@@ -7,7 +7,8 @@ import org.apache.activemq.artemis.cli.commands.ActionContext
 import org.apache.activemq.artemis.cli.commands.util.ConsumerThread
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination
-import use
+import org.apache.activemq.artemis.use
+
 import javax.jms.Session
 
 @Command(name = "consumer", description = "It will send consume messages from an instance")
@@ -36,12 +37,12 @@ class Consumer : DestAbstract() {
             for (i in 0..threads - 1) {
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
                 threadsArray[i] = ConsumerThread(session, dest, i).apply {
-                    this.durable = durable
-                    this.batchSize = txBatchSize
-                    this.breakOnNull = breakOnNull
-                    this.messageCount = messageCount
-                    this.receiveTimeOut = receiveTimeout
-                    this.filter = filter
+                    this.durable = this@Consumer.durable
+                    this.batchSize = this@Consumer.txBatchSize
+                    this.breakOnNull = this@Consumer.breakOnNull
+                    this.messageCount = this@Consumer.messageCount
+                    this.receiveTimeOut = this@Consumer.receiveTimeout
+                    this.filter = this@Consumer.filter
                     this.browse = false
                 }
             }

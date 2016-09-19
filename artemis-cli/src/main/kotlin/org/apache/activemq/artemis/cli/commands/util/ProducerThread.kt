@@ -1,7 +1,8 @@
 package org.apache.activemq.artemis.cli.commands.util
 
+import org.apache.activemq.artemis.use
 import org.apache.activemq.artemis.utils.ReusableLatch
-import use
+
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -133,7 +134,7 @@ open class ProducerThread(val session: Session, val destination: Destination, th
             }
             answer = session.createTextMessage(messageText)
         }
-        if (msgGroupID.isNullOrEmpty()) {
+        if (!msgGroupID.isNullOrEmpty()) {
             answer.setStringProperty("JMSXGroupID", msgGroupID!!)
         }
 

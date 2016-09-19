@@ -6,7 +6,8 @@ import org.apache.activemq.artemis.cli.commands.ActionContext
 import org.apache.activemq.artemis.cli.commands.util.ConsumerThread
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination
-import use
+import org.apache.activemq.artemis.use
+
 import javax.jms.Session
 
 @Command(name = "browser", description = "It will send consume messages from an instance")
@@ -25,9 +26,9 @@ class Browse : DestAbstract() {
             for (i in 0..threads -1) {
                 val session = if (txBatchSize > 0) connection.createSession(true, Session.SESSION_TRANSACTED) else connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
                 threadsArray[i] = ConsumerThread(session, dest, i).apply {
-                    this.sleep = sleep
-                    this.messageCount = messageCount
-                    this.filter = filter
+                    this.sleep = this@Browse.sleep
+                    this.messageCount = this@Browse.messageCount
+                    this.filter = this@Browse.filter
                     this.browse = true
 
                 }

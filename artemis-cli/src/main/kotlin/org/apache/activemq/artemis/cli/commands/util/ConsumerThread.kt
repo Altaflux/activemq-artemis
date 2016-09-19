@@ -1,5 +1,6 @@
 package org.apache.activemq.artemis.cli.commands.util
 
+import org.apache.activemq.artemis.use
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import javax.jms.*
@@ -25,6 +26,14 @@ class ConsumerThread(val session: Session, val destination: Destination, threadN
     internal var finished: CountDownLatch? = null
     internal var bytesAsText: Boolean = false
 
+    override fun run(){
+        if (browse) {
+            browse()
+        }
+        else {
+            consume()
+        }
+    }
 
     fun browse() {
         running = true
@@ -140,24 +149,4 @@ class ConsumerThread(val session: Session, val destination: Destination, threadN
         }
     }
 
-    companion object {
-        private inline fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
-            var closed = false
-            try {
-                return block(this)
-            } catch (e: Exception) {
-                closed = true
-                try {
-                    close()
-                } catch (closeException: Exception) {
-                    //e.addSuppressed(closeException)
-                }
-                throw e
-            } finally {
-                if (!closed) {
-                    close()
-                }
-            }
-        }
-    }
 }

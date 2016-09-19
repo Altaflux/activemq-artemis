@@ -108,7 +108,7 @@ public class Artemis {
       Action action = builder(artemisInstance).build().parse(args);
       action.setHomeValues(artemisHome, artemisInstance);
 
-      if (action.isVerbose()) {
+      if (action.getVerbose()) {
          System.out.print("Executing " + action.getClass().getName() + " ");
          for (String arg : args) {
             System.out.print(arg + " ");

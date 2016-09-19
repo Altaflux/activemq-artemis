@@ -26,7 +26,7 @@ class Run : LockAbstract() {
     override fun execute(context: ActionContext): Any? {
         super.execute(context)
         Artemis.printBanner()
-        getFileConfiguration()
+
         createDirectories(fileConfiguration)
         val broker = brokerDTO
         addShutdownHook(broker.server.configurationFile.parentFile)

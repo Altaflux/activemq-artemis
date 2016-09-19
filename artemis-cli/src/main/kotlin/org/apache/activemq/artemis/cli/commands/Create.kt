@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 class Create : InputAbstract() {
 
     @Arguments(description = "The instance directory to hold the broker's configuration and data.  Path must be writable.", required = true)
-    var directory: File? = null
+    lateinit var directory: File
 
     @Option(name = arrayOf("--host"), description = "The host name of the broker (Default: 0.0.0.0 or input if clustered)")
     internal var host: String = ""
@@ -213,7 +213,7 @@ class Create : InputAbstract() {
 
     internal var IS_CYGWIN: Boolean = false
 
-    override fun execute(context: ActionContext):Any?{
+    override fun execute(context: ActionContext): Any? {
         checkDirectory()
         super.execute(context)
         return run(context)
@@ -221,7 +221,7 @@ class Create : InputAbstract() {
 
 
     private fun checkDirectory() {
-        val directory = directory!!
+
         if (!directory.exists()) {
             val created = directory.mkdirs()
             if (!created) {
@@ -252,7 +252,6 @@ class Create : InputAbstract() {
                 allowAnonymous = false
             }
         }
-        val directory = directory!!
 
         context.out.println(String.format("Creating ActiveMQ Artemis instance at: %s", directory.canonicalPath))
         val filters = mutableMapOf("\${master-slave}" to if (slave) "slave" else "master",

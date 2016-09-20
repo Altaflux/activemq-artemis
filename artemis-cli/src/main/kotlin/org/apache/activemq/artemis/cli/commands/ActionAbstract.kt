@@ -38,15 +38,6 @@ abstract class ActionAbstract : Action {
 
     protected lateinit var context: ActionContext
 
-    //    @Override
-//    public void setHomeValues(File brokerHome, File brokerInstance) {
-//        if (brokerHome != null) {
-//            this.brokerHome = brokerHome.getAbsolutePath();
-//        }
-//        if (brokerInstance != null) {
-//            this.brokerInstance = brokerInstance.getAbsolutePath();
-//        }
-//    }
     override fun setHomeValues(brokerHome: File?, brokerInstance: File?) {
         brokerHome?.let { this.brokerHome = brokerHome.absolutePath }
         brokerInstance?.let { this.brokerInstance = brokerInstance.absolutePath }

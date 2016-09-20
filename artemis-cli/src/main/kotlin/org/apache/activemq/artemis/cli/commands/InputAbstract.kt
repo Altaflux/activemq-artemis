@@ -11,7 +11,6 @@ open class InputAbstract : ActionAbstract() {
 
     private lateinit var scanner: Scanner
 
-
     protected fun input(propertyName: String, prompt: String, silentDefault: String): String {
         if (silentInput) {
             return silentDefault
